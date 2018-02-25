@@ -1,0 +1,163 @@
+# UDEV rule for attaching indi_canon driver if camera is connected
+# Follwing advice from
+# http://www.weather-watch.com/smf/index.php?topic=39257.0
+#
+# pi@raspberrypiAstro:~ $ tail -f -n 0 /var/log/kern.log
+#Jul 16 20:12:52 raspberrypiAstro kernel: [610109.114905] usb 1-1.2: new high-speed USB device number 31 using dwc_otg
+#Jul 16 20:12:52 raspberrypiAstro kernel: [610109.245731] usb 1-1.2: New USB device found, idVendor=04a9, idProduct=3294
+#Jul 16 20:12:52 raspberrypiAstro kernel: [610109.245749] usb 1-1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+#Jul 16 20:12:52 raspberrypiAstro kernel: [610109.245758] usb 1-1.2: Product: Canon Digital Camera
+#Jul 16 20:12:52 raspberrypiAstro kernel: [610109.245765] usb 1-1.2: Manufacturer: Canon Inc.
+#Jul 16 20:12:54 raspberrypiAstro kernel: [610111.896775] usb 1-1.2: USB disconnect, device number 31
+#
+#pi@raspberrypiAstro:~ $ udevadm monitor --environment
+#monitor will print the received events for:
+#UDEV - the event which udev sends out after rule processing
+#KERNEL - the kernel uevent
+#
+#KERNEL[610184.801705] add      /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2 (usb)
+#ACTION=add
+#BUSNUM=001
+#DEVNAME=/dev/bus/usb/001/032
+#DEVNUM=032
+#DEVPATH=/devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2
+#DEVTYPE=usb_device
+#MAJOR=189
+#MINOR=31
+#PRODUCT=4a9/3294/2
+#SEQNUM=1251
+#SUBSYSTEM=usb
+#TYPE=0/0/0
+#
+#KERNEL[610184.801974] add      /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2/1-1.2:1.0 (usb)
+#ACTION=add
+#DEVPATH=/devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2/1-1.2:1.0
+#DEVTYPE=usb_interface
+#INTERFACE=6/1/1
+#MODALIAS=usb:v04A9p3294d0002dc00dsc00dp00ic06isc01ip01in00
+#PRODUCT=4a9/3294/2
+#SEQNUM=1252
+#SUBSYSTEM=usb
+#TYPE=0/0/0
+#
+#UDEV  [610184.814143] add      /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2 (usb)
+#ACTION=add
+#BUSNUM=001
+#DEVNAME=/dev/bus/usb/001/032
+#DEVNUM=032
+#DEVPATH=/devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2
+#DEVTYPE=usb_device
+#ID_BUS=usb
+#ID_FOR_SEAT=usb-platform-3f980000_usb-usb-0_1_2
+#ID_MODEL=Canon_Digital_Camera
+#ID_MODEL_ENC=Canon\x20Digital\x20Camera
+#ID_MODEL_ID=3294
+#ID_PATH=platform-3f980000.usb-usb-0:1.2
+#ID_PATH_TAG=platform-3f980000_usb-usb-0_1_2
+#ID_REVISION=0002
+#ID_SERIAL=Canon_Inc._Canon_Digital_Camera
+#ID_USB_INTERFACES=:060101:
+#ID_VENDOR=Canon_Inc.
+#ID_VENDOR_ENC=Canon\x20Inc.
+#ID_VENDOR_FROM_DATABASE=Canon, Inc.
+#ID_VENDOR_ID=04a9
+#MAJOR=189
+#MINOR=31
+#PRODUCT=4a9/3294/2
+#SEQNUM=1251
+#SUBSYSTEM=usb
+#TAGS=:seat:uaccess:
+#TYPE=0/0/0
+#USEC_INITIALIZED=184802483
+#
+#UDEV  [610184.818397] add      /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2/1-1.2:1.0 (usb)
+#ACTION=add
+#DEVPATH=/devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2/1-1.2:1.0
+#DEVTYPE=usb_interface
+#ID_VENDOR_FROM_DATABASE=Canon, Inc.
+#INTERFACE=6/1/1
+#MODALIAS=usb:v04A9p3294d0002dc00dsc00dp00ic06isc01ip01in00
+#PRODUCT=4a9/3294/2
+#SEQNUM=1252
+#SUBSYSTEM=usb
+#TYPE=0/0/0
+#USEC_INITIALIZED=4803702
+#
+#
+##----------DISCONNECT
+#
+#KERNEL[610190.524189] remove   /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2/1-1.2:1.0 (usb)
+#ACTION=remove
+#DEVPATH=/devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2/1-1.2:1.0
+#DEVTYPE=usb_interface
+#INTERFACE=6/1/1
+#MODALIAS=usb:v04A9p3294d0002dc00dsc00dp00ic06isc01ip01in00
+#PRODUCT=4a9/3294/2
+#SEQNUM=1253
+#SUBSYSTEM=usb
+#TYPE=0/0/0
+#
+#KERNEL[610190.525884] remove   /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2 (usb)
+#ACTION=remove
+#BUSNUM=001
+#DEVNAME=/dev/bus/usb/001/032
+#DEVNUM=032
+#DEVPATH=/devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2
+#DEVTYPE=usb_device
+#MAJOR=189
+#MINOR=31
+#PRODUCT=4a9/3294/2
+#SEQNUM=1254
+#SUBSYSTEM=usb
+#TYPE=0/0/0
+#
+#UDEV  [610190.529016] remove   /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2/1-1.2:1.0 (usb)
+#ACTION=remove
+#DEVPATH=/devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2/1-1.2:1.0
+#DEVTYPE=usb_interface
+#ID_VENDOR_FROM_DATABASE=Canon, Inc.
+#INTERFACE=6/1/1
+#MODALIAS=usb:v04A9p3294d0002dc00dsc00dp00ic06isc01ip01in00
+#PRODUCT=4a9/3294/2
+#SEQNUM=1253
+#SUBSYSTEM=usb
+#TYPE=0/0/0
+#USEC_INITIALIZED=4803702
+#
+#UDEV  [610190.531204] remove   /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2 (usb)
+#ACTION=remove
+#BUSNUM=001
+#DEVNAME=/dev/bus/usb/001/032
+#DEVNUM=032
+#DEVPATH=/devices/platform/soc/3f980000.usb/usb1/1-1/1-1.2
+#DEVTYPE=usb_device
+#ID_BUS=usb
+#ID_FOR_SEAT=usb-platform-3f980000_usb-usb-0_1_2
+#ID_MODEL=Canon_Digital_Camera
+#ID_MODEL_ENC=Canon\x20Digital\x20Camera
+#ID_MODEL_ID=3294
+#ID_PATH=platform-3f980000.usb-usb-0:1.2
+#ID_PATH_TAG=platform-3f980000_usb-usb-0_1_2
+#ID_REVISION=0002
+#ID_SERIAL=Canon_Inc._Canon_Digital_Camera
+#ID_USB_INTERFACES=:060101:
+#ID_VENDOR=Canon_Inc.
+#ID_VENDOR_ENC=Canon\x20Inc.
+#ID_VENDOR_FROM_DATABASE=Canon, Inc.
+#ID_VENDOR_ID=04a9
+#MAJOR=189
+#MINOR=31
+#PRODUCT=4a9/3294/2
+#SEQNUM=1254
+#SUBSYSTEM=usb
+#TAGS=:seat:uaccess:
+#TYPE=0/0/0
+#USEC_INITIALIZED=184802483
+#
+
+#ACTION=="add", SUBSYSTEM=="KERNEL", ATTRS{idVendor}=="04a9", ATTRS{idProduct}=="3294", RUN+="/home/pi/IndiFIFO/startStop.sh start"
+#ACTION=="remove", SUBSYSTEM=="KERNEL", ATTRS{idVendor}=="04a9", ATTRS{idProduct}=="3294", RUN+="/home/pi/IndiFIFO/startStop.sh stop"
+#
+
+ACTION=="add", ENV{DEVTYPE}=="usb_device", ENV{ID_MODEL}=="Canon_Digital_Camera", RUN+="/home/pi/IndiFIFO/startStop.sh start"
+ACTION=="remove", ENV{DEVTYPE}=="usb_device", ENV{ID_MODEL}=="Canon_Digital_Camera", RUN+="/home/pi/IndiFIFO/startStop.sh stop"
